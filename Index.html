@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WARP Robot — Automated MT4 Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0A0E12;
+    --panel:#121822;
+    --panel-2:#161E29;
+    --line:#212B37;
+    --hi:#EDF1F4;
+    --lo:#8593A1;
+    --buy:#35D28A;
+    --buy-dim:#1E7C55;
+    --amber:#F0A83A;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--hi);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  img,svg{display:block; max-width:100%;}
+  .wrap{max-width:960px; margin:0 auto; padding:0 24px;}
+  :focus-visible{outline:2px solid var(--buy); outline-offset:3px;}
+
+  /* ---------- ticker ---------- */
+  .ticker{
+    background:#080B0E;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+    white-space:nowrap;
+    padding:8px 0;
+  }
+  .ticker-track{
+    display:inline-flex;
+    gap:40px;
+    animation:scroll 28s linear infinite;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--lo);
+    letter-spacing:.02em;
+  }
+  .ticker-track span b{color:var(--buy); font-weight:600;}
+  @keyframes scroll{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(10,14,18,.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px;
+  }
+  .logo{
+    font-family:var(--mono); font-weight:700; font-size:15px;
+    letter-spacing:.04em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo::before{
+    content:"";
+    width:8px; height:8px; border-radius:2px;
+    background:var(--buy);
+    box-shadow:0 0 8px var(--buy);
+  }
+  .nav-links{display:flex; gap:28px; font-size:14px; color:var(--lo);}
+  .nav-links a{text-decoration:none;}
+  .nav-links a:hover{color:var(--hi);}
+  .nav-cta{
+    font-family:var(--mono); font-size:13px; font-weight:600;
+    background:var(--buy); color:#06110C;
+    padding:9px 18px; border-radius:4px;
+    text-decoration:none;
+  }
+  @media (max-width:640px){ .nav-links{display:none;} }
+
+  /* ---------- hero / terminal window ---------- */
+  .hero{ padding:56px 24px 40px; }
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; color:var(--buy);
+    letter-spacing:.08em; text-transform:uppercase;
+    display:flex; align-items:center; gap:8px; margin-bottom:16px;
+  }
+  .eyebrow::before{content:"›"; color:var(--lo);}
+  h1{
+    font-size:clamp(28px,5vw,44px);
+    font-weight:800;
+    line-height:1.15;
+    letter-spacing:-.02em;
+    max-width:16ch;
+    margin-bottom:16px;
+  }
+  h1 .num{font-family:var(--mono); color:var(--buy);}
+  .sub{
+    color:var(--lo); font-size:16px; max-width:52ch; margin-bottom:28px;
+  }
+  .hero-actions{display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-bottom:36px;}
+  .btn-primary{
+    font-family:var(--mono); font-weight:600; font-size:14px;
+    background:var(--buy); color:#06110C;
+    padding:14px 26px; border-radius:5px;
+    text-decoration:none; letter-spacing:.02em;
+    box-shadow:0 0 0 1px var(--buy-dim), 0 8px 24px -8px rgba(53,210,138,.5);
+  }
+  .btn-primary:hover{filter:brightness(1.08);}
+  .risk-note{font-size:12px; color:var(--lo);}
+
+  /* terminal window */
+  .terminal{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .term-bar{
+    display:flex; align-items:center; gap:8px;
+    padding:10px 14px;
+    background:var(--panel-2);
+    border-bottom:1px solid var(--line);
+    font-family:var(--mono); font-size:12px; color:var(--lo);
+  }
+  .term-dot{width:9px; height:9px; border-radius:50%; background:#2A3542;}
+  .term-title{margin-left:6px;}
+  .term-body{padding:20px;}
+  .chart-wrap{position:relative; margin-bottom:18px;}
+  .chart-wrap svg{width:100%; height:auto; display:block;}
+  #curve{
+    stroke-dasharray:1000;
+    stroke-dashoffset:1000;
+    animation:draw 2.2s ease-out .3s forwards;
+  }
+  @media (prefers-reduced-motion:reduce){
+    #curve{animation:none; stroke-dashoffset:0;}
+    .ticker-track{animation:none;}
+  }
+  @keyframes draw{ to{stroke-dashoffset:0;} }
+  .readouts{
+    display:grid; grid-template-columns:1fr 1fr; gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .readout{background:var(--panel-2); padding:14px 16px;}
+  .readout .label{font-family:var(--mono); font-size:11px; color:var(--lo); text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px;}
+  .readout .value{font-family:var(--mono); font-size:20px; font-weight:600;}
+  .readout.buy .value{color:var(--buy);}
+
+  /* ---------- section shell ---------- */
+  section{padding:64px 24px;}
+  .section-head{margin-bottom:32px;}
+  .section-head .eyebrow{margin-bottom:10px;}
+  h2{font-size:clamp(22px,3.4vw,30px); font-weight:800; letter-spacing:-.01em; max-width:20ch;}
+  .lede{color:var(--lo); max-width:60ch; margin-top:10px; font-size:15px;}
+
+  /* ---------- log timeline ---------- */
+  .log{border-left:1px solid var(--line); margin-left:6px;}
+  .log-entry{position:relative; padding:0 0 28px 28px;}
+  .log-entry:last-child{padding-bottom:0;}
+  .log-entry::before{
+    content:""; position:absolute; left:-5px; top:4px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--void); border:2px solid var(--buy);
+  }
+  .log-ts{font-family:var(--mono); font-size:12px; color:var(--buy); margin-bottom:6px;}
+  .log-entry p{color:var(--lo); font-size:15px; max-width:56ch;}
+  .log-entry strong{color:var(--hi); font-weight:600;}
+
+  /* ---------- order ticket (what's included) ---------- */
+  .ticket{
+    background:var(--panel); border:1px solid var(--line); border-radius:8px; overflow:hidden;
+  }
+  .ticket-row{
+    display:grid; grid-template-columns:1fr 2fr;
+    border-bottom:1px solid var(--line);
+    padding:16px 18px;
+    gap:12px;
+  }
+  .ticket-row:last-child{border-bottom:none;}
+  .ticket-row .item{font-family:var(--mono); font-size:13px; color:var(--buy); font-weight:600;}
+  .ticket-row .detail{font-size:14px; color:var(--lo);}
+  @media (max-width:560px){ .ticket-row{grid-template-columns:1fr;} }
+
+  /* ---------- guarantee ---------- */
+  .callout{
+    border:1px solid #3A2E14; background:linear-gradient(180deg, rgba(240,168,58,.08), rgba(240,168,58,.02));
+    border-radius:8px; padding:22px;
+  }
+  .callout .eyebrow{color:var(--amber);}
+  .callout ul{list-style:none; margin-top:14px;}
+  .callout li{
+    font-size:14px; color:var(--hi); padding:8px 0 8px 22px; position:relative; border-top:1px solid #241C0D;
+  }
+  .callout li:first-child{border-top:none;}
+  .callout li::before{content:"✓"; position:absolute; left:0; color:var(--amber); font-family:var(--mono);}
+
+  /* ---------- pricing ---------- */
+  .price-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:8px;
+    padding:28px; text-align:center;
+  }
+  .slots{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:12px; color:var(--amber);
+    background:rgba(240,168,58,.1); border:1px solid rgba(240,168,58,.3);
+    padding:6px 12px; border-radius:20px; margin-bottom:18px;
+  }
+  .slots::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--amber);}
+  .price-row{display:flex; align-items:baseline; justify-content:center; gap:12px; margin-bottom:6px;}
+  .price-now{font-family:var(--mono); font-size:44px; font-weight:700; color:var(--buy);}
+  .price-was{font-family:var(--mono); font-size:18px; color:var(--lo); text-decoration:line-through;}
+  .price-includes{color:var(--lo); font-size:13px; margin-bottom:22px;}
+  .slot-bar{
+    height:6px; background:var(--line); border-radius:3px; overflow:hidden; margin-bottom:22px;
+  }
+  .slot-fill{height:100%; width:83%; background:linear-gradient(90deg,var(--amber),#D98A22);}
+
+  /* ---------- FAQ ---------- */
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-item:first-child{border-top:1px solid var(--line);}
+  .faq-q{
+    width:100%; text-align:left; background:none; border:none; color:var(--hi);
+    font-family:var(--sans); font-size:15px; font-weight:600;
+    padding:18px 4px; cursor:pointer;
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+  }
+  .faq-q .plus{font-family:var(--mono); color:var(--buy); font-size:18px; transition:transform .2s;}
+  .faq-item[open] .plus{transform:rotate(45deg);}
+  .faq-a{padding:0 4px 18px; color:var(--lo); font-size:14px; max-width:58ch;}
+
+  /* ---------- final cta ---------- */
+  .final{
+    text-align:center; padding:72px 24px;
+    border-top:1px solid var(--line);
+  }
+  .final h2{margin:0 auto 14px; max-width:18ch;}
+  .final .lede{margin:0 auto 28px;}
+
+  footer{
+    border-top:1px solid var(--line); padding:28px 24px 100px;
+    font-size:12px; color:var(--lo); text-align:center;
+  }
+  footer p{max-width:60ch; margin:0 auto 8px;}
+
+  /* ---------- sticky mobile cta ---------- */
+  .sticky-cta{
+    position:fixed; left:0; right:0; bottom:0; z-index:50;
+    background:rgba(18,24,34,.96);
+    backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);
+    padding:12px 16px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .sticky-cta .price{font-family:var(--mono); font-weight:700; color:var(--buy); font-size:15px;}
+  .sticky-cta .btn-primary{padding:11px 20px; font-size:13px;}
+  @media (min-width:781px){ .sticky-cta{display:none;} }
+</style>
+</head>
+<body>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>GBPUSD <b>▲ 1.2734</b></span>
+    <span>WARP ROBOT · MT4 · MT5</span>
+    <span>DEPOSIT ₦5,000</span>
+    <span>PROFIT $1,800+</span>
+    <span>JAN 2026 → AUG 2026</span>
+    <span>GBPUSD <b>▲ 1.2734</b></span>
+    <span>WARP ROBOT · MT4 · MT5</span>
+    <span>DEPOSIT ₦5,000</span>
+    <span>PROFIT $1,800+</span>
+    <span>JAN 2026 → AUG 2026</span>
+  </div>
+</div>
+
+<header>
+  <div class="nav">
+    <div class="logo">WARP</div>
+    <nav class="nav-links">
+      <a href="#proof">Proof</a>
+      <a href="#included">What's included</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="nav-cta" href="https://selar.com/34frk94461">Get Access</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="proof">
+    <div class="wrap">
+      <div class="eyebrow">GBPUSD · MT4 · Jan – Aug 2026</div>
+      <h1>₦5,000 turned into <span class="num">$1,800+</span> in profit — while I slept.</h1>
+      <p class="sub">A robot that trades my MT4 account for me. No charts to watch, no laptop required, no experience needed to start.</p>
+
+      <div class="terminal">
+        <div class="term-bar">
+          <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
+          <span class="term-title">account_statement.mt4</span>
+        </div>
+        <div class="term-body">
+          <div class="chart-wrap">
+            <svg viewBox="0 0 600 160" preserveAspectRatio="none">
+              <line x1="0" y1="40" x2="600" y2="40" stroke="#1E2731" stroke-width="1"/>
+              <line x1="0" y1="80" x2="600" y2="80" stroke="#1E2731" stroke-width="1"/>
+              <line x1="0" y1="120" x2="600" y2="120" stroke="#1E2731" stroke-width="1"/>
+              <path d="M0,130 C 100,128 150,110 200,100 C 280,86 320,90 360,70 C 420,44 460,50 500,28 C 540,12 570,14 600,6"
+                    fill="none" stroke="#35D28A" stroke-width="2.5" id="curve"/>
+              <circle cx="0" cy="130" r="4" fill="#35D28A"/>
+              <circle cx="600" cy="6" r="4" fill="#35D28A"/>
+              <text x="4" y="148" font-family="JetBrains Mono, monospace" font-size="10" fill="#8593A1">JAN 2026</text>
+              <text x="518" y="148" font-family="JetBrains Mono, monospace" font-size="10" fill="#8593A1">AUG 2026</text>
+            </svg>
+          </div>
+          <div class="readouts">
+            <div class="readout">
+              <div class="label">Deposit</div>
+              <div class="value">₦5,000</div>
+            </div>
+            <div class="readout buy">
+              <div class="label">Profit</div>
+              <div class="value">$1,800+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-actions" style="margin-top:28px;">
+        <a class="btn-primary" href="https://selar.com/34frk94461">Get WARP Robot — ₦5,000 →</a>
+      </div>
+      <p class="risk-note">Trading involves risk. Past performance doesn't guarantee future results. Results shown reflect one user's experience and aren't typical or guaranteed.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">The story</div>
+        <h2>How ₦5,000 became a trading account that runs itself</h2>
+      </div>
+      <div class="log">
+        <div class="log-entry">
+          <div class="log-ts">JAN 2026</div>
+          <p><strong>Bought WARP for ₦5,000</strong> — less than a week of airtime. Installed it on MT4 using the setup video, running on GBP/USD only, starting with $1,000 (though it works from as little as $10).</p>
+        </div>
+        <div class="log-entry">
+          <div class="log-ts">MONTH 1</div>
+          <p><strong>Covered by the guarantee window</strong> — if it made nothing in the first month, the ₦5,000 would be refunded and the robot stays mine. That's what made trying it an easy decision.</p>
+        </div>
+        <div class="log-entry">
+          <div class="log-ts">ONGOING</div>
+          <p><strong>Runs on a VPS, managed from my phone</strong> — no laptop needed. The VPS guide showed me exactly how to set it up so the robot keeps trading even when I'm offline.</p>
+        </div>
+        <div class="log-entry">
+          <div class="log-ts">AUG 2026</div>
+          <p><strong>$1,800+ in profit</strong>, recorded straight from the MT4 terminal — one pair, GBP/USD, no exaggeration.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="included">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Order ticket</div>
+        <h2>What you actually get</h2>
+        <p class="lede">Nothing vague — here's exactly what's in the ₦5,000 package.</p>
+      </div>
+      <div class="ticket">
+        <div class="ticket-row">
+          <div class="item">WARP ROBOT</div>
+          <div class="detail">The EA itself, licensed to your MT4 account.</div>
+        </div>
+        <div class="ticket-row">
+          <div class="item">SETUP VIDEO</div>
+          <div class="detail">A full recorded walkthrough — watch it and set the robot up yourself, at your own pace.</div>
+        </div>
+        <div class="ticket-row">
+          <div class="item">VPS GUIDE</div>
+          <div class="detail">Step-by-step instructions to get your own cloud server running, so the robot trades 24/5 even when your phone is off.</div>
+        </div>
+        <div class="ticket-row">
+          <div class="item">SUPPORT</div>
+          <div class="detail">If you hit an issue while setting up or running it, our team is there to help you through it.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Why I trusted it</div>
+        <h2>Backed by a conditional refund</h2>
+      </div>
+      <div class="callout">
+        <div class="eyebrow">Refund terms</div>
+        <ul>
+          <li>No profit in your first month? Your ₦5,000 is refunded.</li>
+          <li>You still keep the robot either way.</li>
+          <li>Condition: install it following the exact setup video.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head" style="text-align:center;">
+        <div class="eyebrow" style="justify-content:center;">Pricing</div>
+        <h2 style="margin:0 auto;">Get started today</h2>
+      </div>
+      <div class="price-card">
+        <div class="slots">Only 10 slots left at this price</div>
+        <div class="price-row">
+          <span class="price-now">₦5,000</span>
+          <span class="price-was">₦30,000</span>
+        </div>
+        <p class="price-includes">Robot + Setup Video + VPS Guide + Support</p>
+        <div class="slot-bar"><div class="slot-fill"></div></div>
+        <a class="btn-primary" href="https://selar.com/34frk94461" style="width:100%;">Secure Your Slot →</a>
+        <p class="risk-note" style="margin-top:14px;">Price rises to ₦30,000 once these slots are gone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">FAQ</div>
+        <h2>Before you ask</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary class="faq-q">Do I need a laptop?<span class="plus">+</span></summary>
+          <p class="faq-a">No. Once set up, WARP runs on a VPS (cloud server) and can be checked from your phone.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">Do I need trading experience?<span class="plus">+</span></summary>
+          <p class="faq-a">No. The robot handles execution — you just follow the setup video to get it running.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">Who sets it up — me or you?<span class="plus">+</span></summary>
+          <p class="faq-a">You do, using the step-by-step setup video and VPS guide. Our team is on hand if you run into any issues.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">What if it doesn't work for me?<span class="plus">+</span></summary>
+          <p class="faq-a">If it makes no profit in your first month of correctly following setup, you're covered by the refund terms above.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">How much do I need to start?<span class="plus">+</span></summary>
+          <p class="faq-a">As little as $10 — your results scale with your capital.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <div class="eyebrow" style="justify-content:center;">Last step</div>
+      <h2>Only 10 slots left at ₦5,000</h2>
+      <p class="lede">Trading carries risk, and results aren't typical or guaranteed. But for ₦5,000, the potential upside is worth a closer look.</p>
+      <a class="btn-primary" href="https://selar.com/34frk94461">Get WARP Robot Now →</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Trading forex involves substantial risk of loss and is not suitable for every investor. Past performance is not indicative of future results. The figures shown reflect one individual's personal experience and should not be taken as typical or guaranteed.</p>
+  <p>© 2026 WARP Robot. All rights reserved.</p>
+</footer>
+
+<div class="sticky-cta">
+  <span class="price">₦5,000 <span style="color:var(--lo); font-weight:400; text-decoration:line-through;">₦30,000</span></span>
+  <a class="btn-primary" href="https://selar.com/34frk94461">Get Access →</a>
+</div>
+
+</body>
+</html>
