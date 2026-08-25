@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Members Access — No-Deposit Bonus Program</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'YOUR_PIXEL_ID_HERE');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID_HERE&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<style>
+  :root{
+    --bg:#0A0A08;
+    --bg-raised:#131210;
+    --bg-card:#17150F;
+    --gold:#B08D57;
+    --gold-bright:#D3B584;
+    --text:#E8E3D8;
+    --text-dim:#8C8778;
+    --line:#2A2822;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  .wrap{max-width:600px;margin:0 auto;padding:0 24px;}
+
+  h1,h2{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:500;
+    color:var(--gold-bright);
+  }
+  .eyebrow, .label-sm{
+    font-family:'Inter',sans-serif;
+    font-size:11px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+  }
+
+  /* ---- Sticky top bar ---- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,10,8,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:14px 24px;
+  }
+  .topbar-inner{
+    max-width:600px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;
+  }
+  .topbar-mark{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--gold);
+    box-shadow:0 0 10px rgba(176,141,87,0.6);
+  }
+  .btn-mini{
+    font-family:'Inter',sans-serif;
+    font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--bg);background:var(--gold);
+    padding:9px 16px;border-radius:2px;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:background 0.2s ease;
+  }
+  .btn-mini:hover{background:var(--gold-bright);}
+
+  /* ---- Hero / vault ---- */
+  .hero{
+    padding:64px 0 20px;
+    text-align:center;
+  }
+  .vault-stage{
+    position:relative;
+    width:120px;height:120px;
+    margin:0 auto 8px;
+  }
+  .vault-door{
+    width:100%;height:100%;
+    animation:spin-open 1.6s cubic-bezier(.65,0,.3,1) forwards 0.3s;
+    transform-origin:50% 50%;
+  }
+  @keyframes spin-open{
+    0%{transform:rotate(0deg) scale(1);opacity:1;}
+    65%{transform:rotate(310deg) scale(1);opacity:1;}
+    100%{transform:rotate(340deg) scale(0.7);opacity:0;}
+  }
+  .hero-copy{
+    opacity:0;
+    animation:rise-in 0.9s ease forwards 1.5s;
+  }
+  @keyframes rise-in{
+    from{opacity:0;transform:translateY(10px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  h1.hero-title{
+    font-size:clamp(28px,7vw,40px);
+    line-height:1.22;
+    margin:18px 0 18px;
+    max-width:15ch;
+    margin-left:auto;margin-right:auto;
+  }
+  .hero-sub{
+    font-size:16px;
+    color:var(--text-dim);
+    max-width:44ch;
+    margin:0 auto 30px;
+  }
+  .btn-gold{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--gold);color:var(--bg);
+    font-family:'Inter',sans-serif;
+    font-weight:600;font-size:14px;letter-spacing:0.05em;text-transform:uppercase;
+    padding:16px 28px;border-radius:2px;
+    text-decoration:none;
+    transition:background 0.2s ease, transform 0.15s ease;
+  }
+  .btn-gold:hover{background:var(--gold-bright);transform:translateY(-1px);}
+  .btn-gold:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px;}
+  .btn-gold svg{width:16px;height:16px;}
+
+  /* ---- Chambers ---- */
+  .chamber{
+    padding:56px 0 8px;
+    border-top:1px solid var(--line);
+    opacity:0.35;
+    transform:translateY(14px);
+    transition:opacity 0.8s ease, transform 0.8s ease;
+  }
+  .chamber.open{opacity:1;transform:translateY(0);}
+  .chamber-head{
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:20px;
+  }
+  .lock-wrap{
+    position:relative;width:18px;height:18px;flex-shrink:0;
+  }
+  .lock-wrap svg{
+    position:absolute;top:0;left:0;width:18px;height:18px;
+    transition:opacity 0.5s ease, transform 0.5s ease;
+  }
+  .lock-closed{opacity:1;transform:rotate(0);}
+  .lock-open{opacity:0;transform:rotate(-8deg);}
+  .chamber.open .lock-closed{opacity:0;}
+  .chamber.open .lock-open{opacity:1;}
+  .chamber-label{
+    font-family:'Inter',sans-serif;
+    font-size:11px;letter-spacing:0.2em;text-transform:uppercase;
+    color:var(--gold);
+  }
+  h2.chamber-title{
+    font-size:clamp(22px,5.5vw,28px);
+    margin-bottom:16px;
+    line-height:1.28;
+  }
+  .chamber p{
+    font-size:15px;color:var(--text-dim);
+    margin-bottom:14px;
+  }
+  .chamber p b{color:var(--text);font-weight:600;}
+  .chamber p:last-child{margin-bottom:0;}
+
+  .conditions{margin:6px 0 4px;display:grid;gap:14px;}
+  .condition{display:flex;gap:14px;align-items:flex-start;}
+  .condition .num{
+    font-family:'Cormorant Garamond',serif;
+    font-size:18px;color:var(--gold);
+    border:1px solid var(--line);
+    width:28px;height:28px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .condition p{margin-bottom:0;font-size:14.5px;}
+
+  .feature-list{margin:10px 0 4px;display:grid;gap:10px;}
+  .feature-list li{
+    list-style:none;
+    display:flex;gap:10px;align-items:flex-start;
+    font-size:14.5px;color:var(--text-dim);
+  }
+  .feature-list li::before{
+    content:'—';color:var(--gold);flex-shrink:0;
+  }
+  .feature-list li b{color:var(--text);}
+
+  /* ---- Mockup screenshots ---- */
+  .mockup-frame{
+    margin:26px 0 8px;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px;
+    max-width:280px;
+    margin-left:auto;margin-right:auto;
+  }
+  .mockup-frame .m-label{
+    font-family:'Inter',sans-serif;
+    font-size:10px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--text-dim);
+    margin-bottom:14px;
+    display:flex;justify-content:space-between;
+  }
+  .m-balance{
+    font-family:'Cormorant Garamond',serif;
+    font-size:36px;color:var(--gold-bright);
+    margin-bottom:6px;
+  }
+  .m-sub{font-size:11px;color:var(--text-dim);margin-bottom:16px;}
+  .m-chart{width:100%;height:56px;display:block;margin-bottom:4px;}
+  .m-chart-line{
+    fill:none;stroke:var(--gold);stroke-width:1.6;
+    stroke-dasharray:340;stroke-dashoffset:340;
+  }
+  .chamber.open .m-chart-line{
+    animation:draw 1.8s ease-out forwards 0.3s;
+  }
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  .m-check{
+    width:38px;height:38px;border-radius:50%;
+    border:1.5px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 14px;
+  }
+  .m-check svg{width:18px;height:18px;stroke:var(--gold);}
+  .m-caption{
+    text-align:center;font-size:10.5px;color:var(--text-dim);
+    margin-top:10px;letter-spacing:0.02em;
+  }
+
+  /* ---- Access ---- */
+  .access{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;}
+  @media (max-width:440px){.access{grid-template-columns:1fr;}}
+  .access-card{
+    border:1px solid var(--line);
+    padding:16px 18px;
+    background:var(--bg-raised);
+  }
+  .access-card .lvl{
+    font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:8px;display:block;
+  }
+  .access-card p{font-size:13.5px;margin-bottom:0;}
+
+  /* ---- FAQ ---- */
+  .faq-item{
+    border-bottom:1px solid var(--line);
+    padding:16px 0;
+  }
+  .faq-item:last-child{border-bottom:none;}
+  .faq-q{
+    font-family:'Cormorant Garamond',serif;
+    font-size:18px;color:var(--text);
+    margin-bottom:8px;
+  }
+  .faq-a{font-size:14px;color:var(--text-dim);margin-bottom:0;}
+
+  /* ---- Urgency ---- */
+  .urgency-line{
+    text-align:center;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:19px;color:var(--gold-bright);
+    padding:8px 0;
+  }
+
+  /* ---- Final CTA ---- */
+  .final-cta{
+    padding:48px 0 8px;
+    text-align:center;
+  }
+  .cta-stack{display:flex;flex-direction:column;gap:12px;max-width:360px;margin:0 auto;}
+  .btn-line{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    border:1px solid var(--gold);color:var(--gold-bright);
+    background:transparent;
+    font-family:'Inter',sans-serif;
+    font-weight:600;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;
+    padding:15px 20px;border-radius:2px;
+    text-decoration:none;
+    transition:background 0.2s ease;
+  }
+  .btn-line:hover{background:rgba(176,141,87,0.08);}
+  .btn-line svg{width:16px;height:16px;}
+  .cta-caption{font-size:11px;color:var(--text-dim);}
+
+  /* ---- Risk notice ---- */
+  .notice{
+    border-top:1px solid var(--line);
+    padding:26px 0 40px;
+    margin-top:20px;
+  }
+  .notice p{
+    font-size:11.5px;line-height:1.8;color:var(--text-dim);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="eyebrow" style="display:flex;align-items:center;gap:8px;"><span class="topbar-mark"></span>Members Access</span>
+    <a class="btn-mini" href="https://t.me/+Ta7GJkyuImI0MjE8" target="_blank" rel="noopener">Request Access</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="vault-stage">
+      <svg class="vault-door" viewBox="0 0 120 120" fill="none">
+        <circle cx="60" cy="60" r="54" stroke="#B08D57" stroke-width="1.2"/>
+        <circle cx="60" cy="60" r="40" stroke="#B08D57" stroke-width="1"/>
+        <circle cx="60" cy="60" r="6" fill="#B08D57"/>
+        <g stroke="#B08D57" stroke-width="1.4">
+          <line x1="60" y1="20" x2="60" y2="42"/>
+          <line x1="60" y1="78" x2="60" y2="100"/>
+          <line x1="20" y1="60" x2="42" y2="60"/>
+          <line x1="78" y1="60" x2="100" y2="60"/>
+          <line x1="31" y1="31" x2="47" y2="47"/>
+          <line x1="73" y1="73" x2="89" y2="89"/>
+          <line x1="89" y1="31" x2="73" y2="47"/>
+          <line x1="47" y1="73" x2="31" y2="89"/>
+        </g>
+      </svg>
+    </div>
+    <div class="hero-copy">
+      <p class="eyebrow">Members Access Only</p>
+      <h1 class="hero-title">A broker is quietly giving away $100. They're not advertising it.</h1>
+      <p class="hero-sub">No deposit. No card. Real trading capital, sitting in an account, for those who know where to look.</p>
+      <a class="btn-gold" href="https://t.me/+Ta7GJkyuImI0MjE8" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.036 15.803l-.396 5.57c.568 0 .814-.244 1.11-.537l2.663-2.545 5.52 4.04c1.012.557 1.73.264 1.99-.936l3.61-16.98h.001c.305-1.428-.517-1.987-1.505-1.62L1.115 9.99c-1.386.54-1.368 1.316-.237 1.667l5.443 1.7L19.29 5.42c.6-.394 1.148-.176.698.218L9.036 15.803z"/></svg>
+        Request Access — Telegram
+      </a>
+    </div>
+  </section>
+
+  <!-- CHAMBER I -->
+  <section class="chamber" data-chamber>
+    <div class="chamber-head">
+      <span class="lock-wrap">
+        <svg class="lock-closed" viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+        <svg class="lock-open" viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 017.5-2"/></svg>
+      </span>
+      <span class="chamber-label">Chamber I — The Offer</span>
+    </div>
+    <h2 class="chamber-title">Money that isn't mine, in an account that isn't mine either.</h2>
+    <p>The $100 balance you're about to see wasn't deposited by anyone. Neither was the profit sitting on top of it — it came from an automated system, not from someone watching charts all day.</p>
+    <p>Here's what the broker doesn't put in bold print: this money isn't just handed over. To withdraw it, you have to earn your way out — and the exit is built, on purpose, to be hard to clear by hand.</p>
+  </section>
+
+  <!-- CHAMBER II -->
+  <section class="chamber" data-chamber>
+    <div class="chamber-head">
+      <span class="lock-wrap">
+        <svg class="lock-closed" viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+        <svg class="lock-open" viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 017.5-2"/></svg>
+      </span>
+      <span class="chamber-label">Chamber II — The Mechanism</span>
+    </div>
+    <h2 class="chamber-title">Two conditions stand between you and the withdrawal.</h2>
+    <div class="conditions">
+      <div class="condition">
+        <div class="num">1</div>
+        <p><b>Double the account.</b> $100 has to become roughly $200 — capital plus profit — before a cent is withdrawable.</p>
+      </div>
+      <div class="condition">
+        <div class="num">2</div>
+        <p><b>Hit their trading volume.</b> A minimum turnover requirement has to clear first.</p>
+      </div>
+    </div>
+    <p style="margin-top:18px;">Most people who do find out about this offer still walk away with nothing. They trade too cautiously and run out the clock, or push a small account too hard trying to double it fast — and blow it to zero before the volume clears.</p>
+    <p><b>GCoin Bot</b> exists to close that gap. It's automated, purpose-built for exactly this account size, and it's not a general strategy adapted to fit — it was built around this mechanic from the start.</p>
+    <ul class="feature-list">
+      <li><b>One position open at a time</b> — never several trades stacked and fighting each other for margin.</li>
+      <li><b>No grid, no martingale</b> — nothing that doubles down against you the longer a trade goes wrong.</li>
+      <li><b>Defined risk per trade</b> — sized for a small starting balance, not a funded account with room to absorb big swings.</li>
+      <li><b>Runs unattended</b> — once it's connected, you're not required to sit at charts or make discretionary calls.</li>
+      <li><b>No charting experience required</b> — the strategy logic is the bot's job, not yours.</li>
+    </ul>
+  </section>
+
+  <div class="mockup-frame">
+    <div class="m-label"><span>ACCOUNT BALANCE</span><span>SAMPLE</span></div>
+    <div class="m-balance">$100.00 → $200.00</div>
+    <div class="m-sub">Bonus capital, tracked toward the doubling requirement</div>
+    <svg class="m-chart" viewBox="0 0 260 56" preserveAspectRatio="none">
+      <polyline class="m-chart-line" points="0,48 26,44 52,46 78,36 104,38 130,26 156,28 182,16 208,18 234,8 260,4"/>
+    </svg>
+    <p class="m-caption">Illustrative example — for demonstration only</p>
+  </div>
+
+  <!-- CHAMBER III -->
+  <section class="chamber" data-chamber>
+    <div class="chamber-head">
+      <span class="lock-wrap">
+        <svg class="lock-closed" viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+        <svg class="lock-open" viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 017.5-2"/></svg>
+      </span>
+      <span class="chamber-label">Chamber III — Proof</span>
+    </div>
+    <h2 class="chamber-title">What I'll show you, and what I won't pretend to have.</h2>
+    <p>I'll be straight with you — this isn't a five-year track record system, and I won't pretend it is. It was built for one job: clearing a broker's bonus conditions. That's what I can show you proof of — backtest results, and real accounts that have gone through this exact process to a completed withdrawal.</p>
+  </section>
+
+  <div class="mockup-frame">
+    <div class="m-label"><span>WITHDRAWAL</span><span>SAMPLE</span></div>
+    <div class="m-check">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="m-balance" style="text-align:center;">$100.00</div>
+    <div class="m-sub" style="text-align:center;">Withdrawal successful</div>
+    <p class="m-caption">Illustrative example — for demonstration only</p>
+  </div>
+
+  <!-- CHAMBER IV -->
+  <section class="chamber" data-chamber>
+    <div class="chamber-head">
+      <span class="lock-wrap">
+        <svg class="lock-closed" viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+        <svg class="lock-open" viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 017.5-2"/></svg>
+      </span>
+      <span class="chamber-label">Chamber IV — Access</span>
+    </div>
+    <h2 class="chamber-title">Two levels. One is free.</h2>
+    <div class="access">
+      <div class="access-card">
+        <span class="lvl">Level 1 — Free</span>
+        <p>Which broker, and the full walkthrough of how to claim the bonus. No charge.</p>
+      </div>
+      <div class="access-card">
+        <span class="lvl">Level 2 — Paid</span>
+        <p>GCoin Bot — the tool doing the actual work to get you to withdrawal.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAMBER V — FAQ -->
+  <section class="chamber" data-chamber>
+    <div class="chamber-head">
+      <span class="lock-wrap">
+        <svg class="lock-closed" viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+        <svg class="lock-open" viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 017.5-2"/></svg>
+      </span>
+      <span class="chamber-label">Chamber V — Before You Ask</span>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Why isn't the broker named here?</p>
+      <p class="faq-a">Because of how these promotions work — details are shared directly with people who request access, not published for wide search-indexing.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">The bonus is free — why does the bot cost anything?</p>
+      <p class="faq-a">The information is free because it costs nothing to share. The bot is the tool doing the actual account work, which is why it's the paid part.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Is this safe?</p>
+      <p class="faq-a">Trading always carries risk. GCoin Bot avoids the grid and martingale scaling that typically blows up small accounts, but no outcome — including reaching the doubling target — is guaranteed.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">I've never traded before — does that matter?</p>
+      <p class="faq-a">No charting experience is required. The bot runs the strategy; you're responsible for getting the account and connection set up.</p>
+    </div>
+  </section>
+
+  <p class="urgency-line">This offer does not stay quiet forever.</p>
+  <p style="text-align:center;font-size:14px;color:var(--text-dim);max-width:44ch;margin:8px auto 0;">The more people who find it, the faster brokers tighten or kill it. The account you open today is worth more than the one you open once this gets around.</p>
+
+  <section class="final-cta">
+    <div class="cta-stack">
+      <a class="btn-gold" href="https://t.me/+Ta7GJkyuImI0MjE8" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.036 15.803l-.396 5.57c.568 0 .814-.244 1.11-.537l2.663-2.545 5.52 4.04c1.012.557 1.73.264 1.99-.936l3.61-16.98h.001c.305-1.428-.517-1.987-1.505-1.62L1.115 9.99c-1.386.54-1.368 1.316-.237 1.667l5.443 1.7L19.29 5.42c.6-.394 1.148-.176.698.218L9.036 15.803z"/></svg>
+        Request Access — Telegram
+      </a>
+      <p class="cta-caption">Broker access + free bonus walkthrough inside</p>
+      <a class="btn-line" id="waBtn" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2C6.486 2 2.01 6.477 2.01 11.995c0 2.13.663 4.106 1.796 5.735L2.5 22l4.4-1.256a9.926 9.926 0 004.104.892h.005c5.518 0 9.994-4.478 9.994-9.996C21.003 6.477 17.527 2 12.004 2zm0 18.19a8.19 8.19 0 01-4.174-1.14l-.3-.178-3.113.889.899-3.03-.196-.312a8.166 8.166 0 01-1.253-4.424c0-4.523 3.68-8.203 8.204-8.203 2.19 0 4.25.854 5.798 2.404a8.14 8.14 0 012.402 5.8c0 4.524-3.68 8.194-8.267 8.194z"/></svg>
+        Questions First — WhatsApp
+      </a>
+      <p class="cta-caption">Pre-filled message, straight to the point</p>
+    </div>
+  </section>
+
+  <div class="notice">
+    <p><b style="color:var(--text);">Risk notice.</b> Trading carries risk of loss, including of bonus capital. Backtests and past results don't guarantee future performance, and no specific profit, timeframe, or outcome is promised. No-Deposit Bonus terms are set by the broker and can change or end at any time without notice.</p>
+  </div>
+
+</div>
+
+<script>
+  const phone = "2348162761911";
+  const message = "I'm interested in the GCoin Bot for the ND free $100 broker.";
+  document.getElementById('waBtn').href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+  const chambers = document.querySelectorAll('[data-chamber]');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('open');
+      }
+    });
+  }, { threshold: 0.18, rootMargin: '0px 0px -60px 0px' });
+  chambers.forEach(c => io.observe(c));
+
+  // Pixel event tracking on CTA clicks
+  document.querySelectorAll('a[href*="t.me/"]').forEach(el => {
+    el.addEventListener('click', () => {
+      if (typeof fbq === 'function') fbq('track', 'Lead');
+    });
+  });
+  document.getElementById('waBtn').addEventListener('click', () => {
+    if (typeof fbq === 'function') fbq('track', 'Contact');
+  });
+</script>
+</body>
+</html>
